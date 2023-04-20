@@ -40,7 +40,7 @@ public class SimpleTestCase {
     .build();
 
   @Test
-  @Deployment(resources = {"testProcess.bpmn"})
+  @Deployment(resources = {"testProcess.bpmn", "diagram_1.dmn"})
   public void shouldExecuteProcess() {
     // Given we create a new process instance
     ProcessInstance processInstance = runtimeService().startProcessInstanceByKey("testProcess");
@@ -51,6 +51,8 @@ public class SimpleTestCase {
     // And there should exist just a single task within that process instance
     assertThat(task(processInstance)).isNotNull();
 
+    assertThat(task(processInstance).getAssignee().equals("Pluto"));
+    
     // When we complete that task
     complete(task(processInstance));
     // Then the process instance should be ended
